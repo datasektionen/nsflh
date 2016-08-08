@@ -2,7 +2,8 @@
     "name": "datasektionen/nsflh",
     "type": "metaproject",
     "require": {
-        "phpoffice/phpword": "^0.13.0"
+        "phpoffice/phpword": "^0.13.0",
+        "dompdf/dompdf": "0.6.*"
     },
     "authors": [
         {
