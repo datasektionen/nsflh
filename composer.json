@@ -1,0 +1,13 @@
+{
+    "name": "datasektionen/nsflh",
+    "type": "metaproject",
+    "require": {
+        "phpoffice/phpword": "^0.13.0"
+    },
+    "authors": [
+        {
+            "name": "Mattias Danielsson",
+            "email": "matdanie@kth.se"
+        }
+    ]
+}
