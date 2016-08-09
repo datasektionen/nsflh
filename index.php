@@ -2,7 +2,7 @@
 require __DIR__ . '/vendor/autoload.php';
 error_reporting(E_ERROR | E_PARSE);
 
-
+require_once './html.php';
 
 $phpWord = new \PhpOffice\PhpWord\PhpWord();
 
@@ -10,6 +10,7 @@ $TAITAN = 'https://taitan.datasektionen.se';
 $ME_URL = $_ENV['APP_URL']."?path=";
 
 $json = file_get_contents($TAITAN.$_GET['path']);
+//$json = mb_convert_encoding($json , 'HTML-ENTITIES', "UTF-8");
 $obj = json_decode($json);
 
 
@@ -45,22 +46,24 @@ $phpWord->addFontStyle(
 
 // Arc
 $section->addTitle($obj->title, 1);
-$section->addText(htmlspecialchars_decode(strip_tags($obj->body)), $pStyle);
+//$section->addText(htmlspecialchars_decode(strip_tags($obj->body)), $pStyle);
 
-#\PhpOffice\PhpWord\Shared\Html::addHtml($section, htmlspecialchars_decode($obj->body)) ;
+WaffleHtml::addHtml($section, $obj->body) ;
 if ($obj->sidebar) {
   $sidebar = $phpWord->addSection();
   $sidebar->addTitle("Sidebar", 1);
-  $sidebar->addText(strip_tags($obj->sidebar), $pStyle);
+  //$sidebar->addText(strip_tags($obj->sidebar), $pStyle);
+
+  WaffleHtml::addHtml($sidebar, $obj->sidebar) ;
 }
 
 $nav = $phpWord->addSection();
 $nav->addTitle("Navigation", 1);
 foreach ($obj->nav as $anchor) {
-  $nav->addLink($ME_URL.$anchor->slug, $anchor->title);
+  $nav->addLink($ME_URL.$anchor->slug, $anchor->title, array('name' => 'Arial', 'size' => 16, 'color' => 'e83d84', 'bold' => false));
   if ($anchor->nav) {
     foreach ($anchor->nav as $subnav) {
-      $nav->addLink($ME_URL.$subnav->slug, "  ".$subnav->title);
+      $nav->addLink($ME_URL.$subnav->slug, "  ".$subnav->title, array('name' => 'Arial', 'size' => 16, 'color' => 'e83d84', 'bold' => false));
     }
   }
 }
